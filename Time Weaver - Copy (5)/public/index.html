@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Weaver - Calendar Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="preload">
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-frame">
+            <h1>Welcome Back!</h1>
+            <p>Select your calendar type to begin.</p>
+            <button id="personalCalendarButton" class="btn btn-personal">Personal Calendar</button>
+            <button id="academicCalendarButton" class="btn btn-academic">Academic Calendar</button>
+            <button id="adminCalendarButton" class="btn btn-secondary">Admin</button>
+        </div>
+    </div>
+
+    <!-- Personal Login Page -->
+    <div id="personalLoginPage" class="page">
+        <div class="login-frame">
+            <h1>Personal Login</h1>
+            <input type="text" id="personalUsername" placeholder="Username">
+            <input type="password" id="personalPassword" placeholder="Password">
+            <div class="button-group">
+                <button id="personalLoginButton" class="btn btn-primary">Login</button>
+                <button id="personalRegisterButton" class="btn btn-success">Register</button>
+            </div>
+            <button id="backFromPersonalButton" class="btn btn-secondary">Back</button>
+        </div>
+    </div>
+
+    <!-- Admin Login Page -->
+    <div id="adminLoginPage" class="page">
+        <div class="login-frame">
+            <h1>Admin Login</h1>
+            <input type="text" id="adminUsername" placeholder="Username" value="admin">
+            <input type="password" id="adminPassword" placeholder="Password">
+            <div class="button-group">
+                <button id="adminLoginButton" class="btn btn-primary">Login</button>
+                <button id="backFromAdminButton" class="btn btn-secondary">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPage" class="page">
+        <div class="calendar-container" style="max-width:1000px;">
+            <div class="left-panel" style="min-width:380px;max-width:420px;">
+                <div class="panel-header">
+                    <h2>Admin Panel</h2>
+                    <button id="adminLogoutButton" class="btn btn-danger btn-today">Logout</button>
+                </div>
+                <div class="quote-label">Manage users, passwords and cleanup.</div>
+                <div>
+                    <h3 style="margin:10px 0;">Users</h3>
+                    <div id="adminUsersList" class="event-list"></div>
+                </div>
+            </div>
+            <div class="calendar-wrapper">
+                <div class="quote-label" style="text-align:left">Update Password</div>
+                <input type="text" id="adminTargetUsername" placeholder="Username" style="margin-bottom:10px">
+                <select id="adminTargetRole" class="combo-box" style="margin-bottom:10px">
+                    <option value="" selected disabled>Select role</option>
+                    <option value="personal">personal</option>
+                    <option value="student">student</option>
+                    <option value="teacher">teacher</option>
+                </select>
+                <div class="button-group" style="margin-bottom:20px">
+                    <input type="password" id="adminNewPassword" placeholder="New Password">
+                    <button id="adminTogglePassword" class="btn btn-secondary">Show</button>
+                </div>
+                <button id="adminChangePasswordButton" class="btn btn-primary" style="width:auto;margin-bottom:20px">Change Password</button>
+                <div class="quote-label" style="text-align:left">Delete User</div>
+                <input type="text" id="adminDeleteUsername" placeholder="Username" style="margin-bottom:10px">
+                <select id="adminDeleteRole" class="combo-box" style="margin-bottom:10px">
+                    <option value="" selected disabled>Select role</option>
+                    <option value="personal">personal</option>
+                    <option value="student">student</option>
+                    <option value="teacher">teacher</option>
+                </select>
+                <button id="adminDeleteUserButton" class="btn btn-danger" style="width:auto;margin-top:10px">Delete User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Login Page -->
+    <div id="academicLoginPage" class="page">
+        <div class="login-frame">
+            <h1>Academic Login</h1>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="student">Student</button>
+                <button class="tab-btn" data-tab="teacher">Teacher</button>
+            </div>
+
+            <div id="studentTab" class="tab-content active">
+                <input type="text" id="studentNameLineEdit" placeholder="Name">
+                <input type="text" id="studentRollLineEdit" placeholder="Roll Number (e.g., CT-123)">
+                <div id="studentDepartmentDisplay" class="department-display-box" style="display:none;">
+                    <div class="dept-icon">🎓</div>
+                    <div class="dept-info">
+                        <div class="dept-code" id="deptCode"></div>
+                        <div class="dept-name" id="deptName"></div>
+                    </div>
+                </div>
+                <input type="text" id="studentUniversityLineEdit" placeholder="Search University..." list="universityList" autocomplete="off">
+                <datalist id="universityList"></datalist>
+                <input type="password" id="studentPasswordLineEdit" placeholder="Password">
+                <div class="button-group">
+                    <button id="studentLoginButton" class="btn btn-primary">Login</button>
+                    <button id="studentRegisterButton" class="btn btn-success">Register</button>
+                </div>
+            </div>
+
+            <div id="teacherTab" class="tab-content">
+                <input type="text" id="teacherUsernameLineEdit" placeholder="Username">
+                <input type="text" id="teacherUniversityLineEdit" placeholder="Search University..." list="universityList" autocomplete="off">
+                <input type="text" id="teacherDepartmentLineEdit" placeholder="Search Department..." list="departmentList" autocomplete="off">
+                <datalist id="departmentList"></datalist>
+                <input type="password" id="teacherPasswordLineEdit" placeholder="Password">
+                <div class="button-group">
+                    <button id="teacherLoginButton" class="btn btn-primary">Login</button>
+                    <button id="teacherRegisterButton" class="btn btn-success">Register</button>
+                </div>
+            </div>
+
+            <button id="backToMainLoginButton" class="btn btn-secondary">Back</button>
+        </div>
+    </div>
+
+    <!-- Calendar Page -->
+    <div id="calendarPage" class="page">
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+            <div class="theme-switcher-title">Themes</div>
+            <button class="theme-btn" data-theme="light" title="Light Theme">☀️</button>
+            <button class="theme-btn" data-theme="dark" title="Dark Theme">🌑</button>
+            <button class="theme-btn" data-theme="nature" title="Nature Theme">🌿</button>
+            <button class="theme-btn" data-theme="neon" title="Neon Theme">⚡</button>
+            <button class="theme-btn" data-theme="gray" title="Gray Theme">💀</button>
+        </div>
+
+        <div class="calendar-container">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h2 id="currentUserLabel">Welcome, User!</h2>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <button id="keyboardShortcutsBtn" class="btn btn-secondary" style="width:auto;padding:8px 12px;margin:0;font-size:10pt;" title="Keyboard Shortcuts">⌨️</button>
+                        <button id="goToTodayButton" class="btn btn-today">Today</button>
+                    </div>
+                </div>
+                
+                <!-- View Switcher -->
+                <div class="view-switcher">
+                    <button class="view-btn" data-view="dashboard">🏠 Home</button>
+                    <button class="view-btn" data-view="month">📅 Month</button>
+                    <button class="view-btn" data-view="week">📊 Week</button>
+                    <button class="view-btn" data-view="day">📋 Day</button>
+                </div>
+
+                <div id="quoteLabel" class="quote-label">Quote...</div>
+
+                <select id="religionComboBox" class="combo-box">
+                    <option>Select Religion</option>
+                    <option>Christian</option>
+                    <option>Hindu</option>
+                    <option>Islam</option>
+                    <option>Jewish</option>
+                    <option>Sikh</option>
+                </select>
+
+                <!-- Student: Task Manager Button -->
+                <button id="openTaskManagerButton" class="btn btn-warning" style="display:none">📝 Task Manager</button>
+
+                <!-- Teacher: Department event and availability (visible for teachers only) -->
+                <button id="teacherDepartmentEventButton" class="btn btn-primary" style="display:none;margin-top:10px;width:auto;">📢 Department Event</button>
+                <button id="teacherAvailabilityButton" class="btn btn-secondary" style="display:none;margin-top:6px;width:auto;">🕒 Set Availability</button>
+
+                <!-- Student: Find teacher availability (visible for students only) -->
+                <button id="studentFindTeacherButton" class="btn btn-secondary" style="display:none;margin-top:10px;width:auto;">🔍 Find Teacher Availability</button>
+
+                <div class="search-container">
+                    <input type="text" id="searchLineEdit" placeholder="Search events..." list="searchSuggestions">
+                    <datalist id="searchSuggestions"></datalist>
+                    <button id="searchButton" class="btn btn-primary">Search</button>
+                </div>
+                
+                <select id="categoryFilter" class="combo-box">
+                    <option value="">All Categories</option>
+                    <option value="Work">🏢 Work</option>
+                    <option value="Personal">👨‍👩‍👧 Personal</option>
+                    <option value="Study">📚 Study</option>
+                    <option value="Health">💪 Health</option>
+                    <option value="Social">🎉 Social</option>
+                    <option value="Travel">✈️ Travel</option>
+                </select>
+
+                <div id="selectedDateLabel" class="selected-date-label">Selected Date:</div>
+
+                <div id="eventListWidget" class="event-list"></div>
+                
+                <div id="eventActions" style="display:none; margin-top:10px;">
+                    <button id="editEventButton" class="btn btn-primary" style="width:auto; padding:8px 16px; margin-right:10px;">✏️ Edit</button>
+                    <button id="deleteEventButton" class="btn btn-danger" style="width:auto; padding:8px 16px;">🗑️ Delete</button>
+                </div>
+
+                <!-- Quick Add Event Section (Hidden for teachers) -->
+                <div id="quickAddEventSection">
+                    <div class="quote-label" style="margin-top:20px">Quick Add Event</div>
+                    
+                    <input type="text" id="eventLineEdit" placeholder="Event description...">
+
+                    <div class="time-section">
+                        <div class="time-presets">
+                            <button class="time-preset-btn" data-start="09:00" data-end="10:00" title="Morning">🌅 Morning</button>
+                            <button class="time-preset-btn" data-start="12:00" data-end="13:00" title="Noon">☀️ Noon</button>
+                            <button class="time-preset-btn" data-start="14:00" data-end="15:00" title="Afternoon">🌤️ Afternoon</button>
+                            <button class="time-preset-btn" data-start="18:00" data-end="19:00" title="Evening">🌆 Evening</button>
+                        </div>
+                        
+                        <div class="time-inputs">
+                            <label>Start:</label>
+                            <input type="time" id="startTimeEdit" value="09:00">
+                            <label>End:</label>
+                            <input type="time" id="endTimeEdit" value="10:00">
+                        </div>
+                        
+                        <div class="duration-selector">
+                            <label>Duration:</label>
+                            <div class="duration-buttons">
+                                <button class="duration-btn" data-minutes="15">15m</button>
+                                <button class="duration-btn" data-minutes="30">30m</button>
+                                <button class="duration-btn" data-minutes="60">1h</button>
+                                <button class="duration-btn" data-minutes="120">2h</button>
+                                <button class="duration-btn" data-minutes="240">4h</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="combo-group">
+                        <select id="recurrenceComboBox" class="combo-box">
+                            <option>Doesn't Repeat</option>
+                            <option>Daily</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                            <option>Yearly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="combo-group" id="recurrenceCountGroup" style="display: none;">
+                        <label for="recurrenceCountInput" style="font-size: 0.9em; margin-right: 8px; white-space: nowrap;">Repeat for:</label>
+                        <input type="number" id="recurrenceCountInput" class="combo-box" 
+                               placeholder="Count (leave empty or 0 = forever)" 
+                               min="0" value="" 
+                               style="width: auto; flex: 1;"
+                               title="How many times to repeat. For Daily: number of days. For Weekly: number of weeks. For Monthly: number of months. For Yearly: number of years. Leave empty or enter 0 = repeat forever">
+                        <span id="recurrenceCountLabel" style="font-size: 0.85em; margin-left: 8px; color: #666; white-space: nowrap;"></span>
+                    </div>
+
+                    <div class="combo-group">
+                        <select id="colorComboBox" class="combo-box">
+                            <option>Default Color</option>
+                            <option>Red</option>
+                            <option>Green</option>
+                            <option>Blue</option>
+                            <option>Yellow</option>
+                            <option>Orange</option>
+                            <option>Purple</option>
+                        </select>
+                    </div>
+                    
+                    <select id="categoryComboBox" class="combo-box">
+                        <option>No Category</option>
+                        <option>🏢 Work</option>
+                        <option>👨‍👩‍👧 Personal</option>
+                        <option>📚 Study</option>
+                        <option>💪 Health</option>
+                        <option>🎉 Social</option>
+                        <option>✈️ Travel</option>
+                    </select>
+
+                    <button id="addEventButton" class="btn btn-primary">Add Event</button>
+                </div>
+
+                <button id="backToLoginButton" class="btn btn-danger">Logout</button>
+            </div>
+
+            <!-- Calendar -->
+            <div class="calendar-wrapper">
+                <div id="calendarWidget" class="calendar-widget"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Switcher for Login Pages -->
+    <div class="theme-switcher theme-switcher-login">
+        <div class="theme-switcher-title">Themes</div>
+        <button class="theme-btn active" data-theme="light" title="Light Theme">☀️</button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme">🌑</button>
+        <button class="theme-btn" data-theme="nature" title="Nature Theme">🌿</button>
+        <button class="theme-btn" data-theme="neon" title="Neon Theme">⚡</button>
+        <button class="theme-btn" data-theme="gray" title="Gray Theme">💀</button>
+    </div>
+
+    <!-- Task Manager Modal - Notepad Style -->
+    <div id="taskModalOverlay" class="task-modal-overlay">
+        <div class="task-modal">
+            <div class="task-modal-header">
+                <h2>📝 My Notepad</h2>
+                <button class="task-modal-close" onclick="closeTaskManager()">×</button>
+            </div>
+            
+            <div class="notepad-container">
+                <div class="notepad-toolbar">
+                    <button onclick="insertText('• ')">• Bullet</button>
+                    <button onclick="insertText('★ ')">★ Star</button>
+                    <button onclick="insertText('→ ')">→ Arrow</button>
+                    <button onclick="insertText('# ')">📌 Heading</button>
+                    <button onclick="insertText('- ')">- Dash</button>
+                    <button onclick="clearNotepad()">🗑️ Clear</button>
+                </div>
+                
+                <textarea 
+                    id="notepadTextarea" 
+                    class="notepad-textarea" 
+                    placeholder="Start typing your notes here...&#10;&#10;Tips:&#10;• Use bullet points for lists&#10;★ Mark important items&#10;→ Create action items&#10;# Use for headings&#10;&#10;Your notes are automatically saved!"
+                ></textarea>
+                
+                <div class="notepad-footer">
+                    <div class="notepad-info">
+                        <span id="charCount">0</span> characters | 
+                        <span id="lineCount">0</span> lines | 
+                        Last saved: <span id="lastSaved">Never</span>
+                    </div>
+                    <div class="notepad-actions">
+                        <button class="btn btn-secondary" onclick="downloadNotes()" style="width:auto;padding:8px 16px;margin:0">💾 Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay"></div>
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="app_academic_features.js"></script>
+
+    <!-- App Modal -->
+    <div id="appModalOverlay" style="display:none">
+        <div id="appModal">
+            <div id="appModalMessage"></div>
+            <button id="appModalClose" onclick="closeAppModal()" class="btn btn-primary" style="width:auto;margin-top:12px">OK</button>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcutsModalOverlay" class="task-modal-overlay">
+        <div class="task-modal" style="max-width:600px;">
+            <div class="task-modal-header">
+                <h2>⌨️ Keyboard Shortcuts</h2>
+                <button class="task-modal-close" onclick="closeShortcutsModal()">×</button>
+            </div>
+            <div class="shortcuts-content">
+                <div class="shortcuts-section">
+                    <h3>Navigation</h3>
+                    <div class="shortcut-item">
+                        <kbd>T</kbd>
+                        <span>Go to Today</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>←</kbd> <kbd>→</kbd>
+                        <span>Previous / Next Month/Week/Day</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>↑</kbd> <kbd>↓</kbd>
+                        <span>Previous / Next Week (Month view) or Day</span>
+                    </div>
+                </div>
+                
+                <div class="shortcuts-section">
+                    <h3>Views</h3>
+                    <div class="shortcut-item">
+                        <kbd>1</kbd>
+                        <span>Month View</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>2</kbd>
+                        <span>Week View</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>3</kbd>
+                        <span>Day View</span>
+                    </div>
+                </div>
+                
+                <div class="shortcuts-section">
+                    <h3>Actions</h3>
+                    <div class="shortcut-item">
+                        <kbd>N</kbd>
+                        <span>New Event (Focus on event input)</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Esc</kbd>
+                        <span>Close Modals / Logout</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Enter</kbd>
+                        <span>Submit Login Forms</span>
+                    </div>
+                </div>
+
+                <div class="shortcuts-section" id="teacherShortcuts" style="display:none;">
+                    <h3>Teacher Actions</h3>
+                    <div class="shortcut-item">
+                        <kbd>D</kbd>
+                        <span>Post Department Event</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>A</kbd>
+                        <span>Set Availability</span>
+                    </div>
+                </div>
+
+                <div class="shortcuts-section" id="studentShortcuts" style="display:none;">
+                    <h3>Student Actions</h3>
+                    <div class="shortcut-item">
+                        <kbd>F</kbd>
+                        <span>Find Teacher Availability</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Department Event Modal -->
+    <div id="teacherDeptEventModalOverlay" class="task-modal-overlay">
+        <div class="task-modal" style="max-width:500px;">
+            <div class="task-modal-header">
+                <h2>📢 Post Department Event</h2>
+                <button class="task-modal-close" onclick="closeDeptEventModal()">×</button>
+            </div>
+            <div style="padding:20px;">
+                <input type="text" id="deptEventDescription" placeholder="Event description" class="combo-box" style="margin-bottom:10px;">
+                <input type="date" id="deptEventDate" class="combo-box" style="margin-bottom:10px;">
+                <div style="display:flex;gap:10px;margin-bottom:10px;">
+                    <input type="time" id="deptEventStartTime" value="09:00" class="combo-box" style="flex:1;">
+                    <input type="time" id="deptEventEndTime" value="10:00" class="combo-box" style="flex:1;">
+                </div>
+                <select id="deptEventColor" class="combo-box" style="margin-bottom:10px;">
+                    <option>Default Color</option>
+                    <option>Red</option>
+                    <option>Green</option>
+                    <option>Blue</option>
+                    <option>Yellow</option>
+                    <option>Orange</option>
+                    <option>Purple</option>
+                </select>
+                <button id="postDeptEventButton" class="btn btn-primary" style="width:100%;">Post Event</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Availability Modal -->
+    <div id="teacherAvailabilityModalOverlay" class="task-modal-overlay">
+        <div class="task-modal" style="max-width:500px;">
+            <div class="task-modal-header">
+                <h2>🕒 Set Your Availability</h2>
+                <button class="task-modal-close" onclick="closeAvailabilityModal()">×</button>
+            </div>
+            <div style="padding:20px;">
+                <p style="color:var(--text-secondary);margin-bottom:15px;font-size:10pt;">Add weekly availability slots. Students can search for you and view these times.</p>
+                <select id="availabilityDay" class="combo-box" style="margin-bottom:10px;">
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                </select>
+                <div style="display:flex;gap:10px;margin-bottom:10px;">
+                    <input type="time" id="availabilityStartTime" value="09:00" class="combo-box" style="flex:1;">
+                    <input type="time" id="availabilityEndTime" value="10:00" class="combo-box" style="flex:1;">
+                </div>
+                <input type="text" id="availabilityNote" placeholder="Optional note (e.g., Office hours)" class="combo-box" style="margin-bottom:10px;">
+                <div style="display:flex;gap:10px;">
+                    <button id="addAvailabilitySlotButton" class="btn btn-success" style="flex:1;">Add Slot</button>
+                    <button id="clearAvailabilityButton" class="btn btn-danger" style="flex:1;">Clear All</button>
+                </div>
+                <div id="availabilitySlotsList" style="margin-top:15px;max-height:200px;overflow-y:auto;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Find Teacher Modal -->
+    <div id="studentFindTeacherModalOverlay" class="task-modal-overlay">
+        <div class="task-modal" style="max-width:600px;">
+            <div class="task-modal-header">
+                <h2>🔍 Find Teacher Availability</h2>
+                <button class="task-modal-close" onclick="closeFindTeacherModal()">×</button>
+            </div>
+            <div style="padding:20px;">
+                <input type="text" id="findTeacherName" placeholder="Teacher username" class="combo-box" style="margin-bottom:10px;">
+                <button id="searchTeacherButton" class="btn btn-primary" style="width:100%;margin-bottom:15px;">Search</button>
+                <div id="teacherSearchResults" style="max-height:300px;overflow-y:auto;"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

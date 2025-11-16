@@ -1,0 +1,577 @@
+===============================================================================
+                    TIME WEAVER - API DOCUMENTATION
+                    Complete REST API Reference
+===============================================================================
+
+BASE URL: http://localhost:8080/api
+
+All endpoints return JSON responses.
+All POST requests require Content-Type: application/json header.
+
+===============================================================================
+                    AUTHENTICATION ENDPOINTS
+===============================================================================
+
+1. USER REGISTRATION
+--------------------
+POST /api/user/add
+
+Request Body:
+{
+    "username": "john_doe",
+    "password": "secure123",
+    "role": "student",           // "personal", "student", "teacher"
+    "university": "NUST"          // Required for academic users
+}
+
+Response:
+{
+    "success": true,
+    "exists": false               // true if user already exists
+}
+
+Status Codes:
+- 200: Success
+- 400: Missing parameters
+
+
+2. USER LOGIN
+-------------
+POST /api/user/validate
+
+Request Body:
+{
+    "username": "john_doe",
+    "password": "secure123",
+    "role": "student",
+    "university": "NUST"
+}
+
+Response (Success):
+{
+    "valid": true
+}
+
+Response (Failure):
+{
+    "valid": false,
+    "error": "Invalid credentials"
+}
+
+Status Codes:
+- 200: Success
+- 400: Missing parameters
+
+
+3. USER PROFILE
+---------------
+GET /api/user/profile?username=john_doe&role=student&university=NUST
+
+Response:
+{
+    "displayName": "John Doe",
+    "university": "NUST",
+    "department": "CT"
+}
+
+POST /api/user/profile
+
+Request Body:
+{
+    "username": "john_doe",
+    "role": "student",
+    "university": "NUST",
+    "displayName": "John Doe",
+    "department": "CT"
+}
+
+Response:
+{
+    "success": true
+}
+
+
+===============================================================================
+                    EVENT ENDPOINTS
+===============================================================================
+
+4. GET EVENTS FOR DATE
+----------------------
+GET /api/events?username=john_doe&date=2025-03-15
+
+Response:
+{
+    "events": [
+        {
+            "id": 1,
+            "description": "Team Meeting",
+            "startTime": "09:00",
+            "endTime": "10:00",
+            "color": "Blue",
+            "isPersonal": true,
+            "recurrence": "none",
+            "category": "Work",
+            "categoryIcon": "💼"
+        }
+    ]
+}
+
+
+5. CREATE EVENT
+---------------
+POST /api/events
+
+Request Body:
+{
+    "username": "john_doe",
+    "date": "2025-03-15",
+    "description": "Project Deadline",
+    "startTime": "14:00",
+    "endTime": "15:00",
+    "color": "Red",
+    "isPersonal": true,
+    "recurrence": "none",          // "none", "daily", "weekly", "monthly"
+    "category": "Work",
+    "categoryIcon": "💼",
+    "department": ""               // For department events
+}
+
+Response:
+{
+    "success": true
+}
+
+
+6. UPDATE EVENT
+---------------
+PUT /api/events/{id}
+
+Request Body:
+{
+    "description": "Updated Meeting",
+    "startTime": "10:00",
+    "endTime": "11:00",
+    "color": "Green"
+}
+
+Response:
+{
+    "success": true
+}
+
+
+7. DELETE EVENT
+---------------
+DELETE /api/events/{id}
+
+Response:
+{
+    "success": true
+}
+
+
+8. GET ALL EVENTS (For Search)
+-------------------------------
+GET /api/events/all?username=john_doe
+
+Response:
+{
+    "events": [
+        {
+            "date": "2025-03-15",
+            "description": "Meeting"
+        }
+    ]
+}
+
+
+9. GET EVENTS WITH RECURRENCE (DSA-Powered)
+--------------------------------------------
+GET /api/events/recurrence?username=john_doe&date=2025-03-15
+
+Uses RecurrenceEngine to calculate recurring events.
+
+Response:
+{
+    "events": [
+        {
+            "id": 2,
+            "description": "Weekly Standup",
+            "startTime": "09:00",
+            "endTime": "09:30",
+            "recurrence": "weekly"
+        }
+    ]
+}
+
+
+10. TRIE SEARCH (DSA-Powered)
+------------------------------
+GET /api/search/trie?term=meeting
+
+Uses Trie data structure for fast prefix search.
+
+Response:
+{
+    "eventIds": [1, 5, 12, 23]
+}
+
+
+===============================================================================
+                    HOLIDAY ENDPOINTS
+===============================================================================
+
+11. GET HOLIDAYS
+----------------
+GET /api/holidays?date=2025-03-15&religion=Islam
+
+Response:
+{
+    "holidays": ["Eid al-Fitr"]
+}
+
+
+12. SEARCH HOLIDAYS
+-------------------
+GET /api/holidays/search?religion=Islam&query=eid
+
+Response:
+{
+    "holidays": [
+        {
+            "date": "2025-03-31",
+            "name": "Eid al-Fitr"
+        }
+    ]
+}
+
+
+13. ADD HOLIDAY (Admin Only)
+-----------------------------
+POST /api/holidays
+
+Request Body:
+{
+    "date": "2025-03-31",
+    "religion": "Islam",
+    "holidayName": "Eid al-Fitr"
+}
+
+Response:
+{
+    "success": true
+}
+
+
+===============================================================================
+                    ACADEMIC ENDPOINTS
+===============================================================================
+
+14. SEARCH TEACHERS
+-------------------
+GET /api/teachers/search?name=ali&university=NUST&department=CT
+
+Response:
+{
+    "teachers": [
+        {
+            "username": "ali_khan",
+            "displayName": "Dr. Ali Khan",
+            "university": "NUST",
+            "department": "CT"
+        }
+    ]
+}
+
+
+15. GET TEACHER AVAILABILITY
+-----------------------------
+GET /api/teachers/availability?teacher=ali_khan
+
+Response:
+{
+    "slots": [
+        {
+            "dayOfWeek": 1,           // 0=Sunday, 1=Monday, etc.
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "note": "Office Hours"
+        }
+    ]
+}
+
+
+16. SET TEACHER AVAILABILITY
+-----------------------------
+POST /api/teachers/availability
+
+Request Body:
+{
+    "teacher": "ali_khan",
+    "day": 1,
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "note": "Office Hours",
+    "clear": false                // true to clear all slots
+}
+
+Response:
+{
+    "success": true
+}
+
+
+===============================================================================
+                    DATA ENDPOINTS (DSA-Powered)
+===============================================================================
+
+17. GET UNIVERSITIES
+--------------------
+GET /api/universities
+
+Response:
+{
+    "universities": [
+        "National University of Sciences and Technology (NUST)",
+        "Lahore University of Management Sciences (LUMS)",
+        "COMSATS University Islamabad"
+    ]
+}
+
+
+18. GET DEPARTMENTS
+-------------------
+GET /api/departments
+
+Response:
+{
+    "departments": {
+        "CT": "Computer Science",
+        "SE": "Software Engineering",
+        "ME": "Mechanical Engineering",
+        "EE": "Electrical Engineering"
+    }
+}
+
+
+19. VALIDATE ROLL NUMBER
+-------------------------
+GET /api/validate/roll?roll=CT-123
+
+Response:
+{
+    "valid": true,
+    "department": "CT",
+    "departmentName": "Computer Science"
+}
+
+
+===============================================================================
+                    TASK ENDPOINTS
+===============================================================================
+
+20. GET TASKS
+-------------
+GET /api/tasks?username=john_doe
+
+Response:
+{
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Complete Assignment",
+            "dueDate": "2025-03-20",
+            "completed": false
+        }
+    ]
+}
+
+
+21. ADD TASK
+------------
+POST /api/tasks
+
+Request Body:
+{
+    "username": "john_doe",
+    "title": "Complete Assignment",
+    "due": "2025-03-20"
+}
+
+Response:
+{
+    "success": true
+}
+
+
+22. TOGGLE TASK
+---------------
+PUT /api/tasks/{id}
+
+Request Body:
+{
+    "completed": true
+}
+
+Response:
+{
+    "success": true
+}
+
+
+23. DELETE TASK
+---------------
+DELETE /api/tasks/{id}
+
+Response:
+{
+    "success": true
+}
+
+
+===============================================================================
+                    UTILITY ENDPOINTS
+===============================================================================
+
+24. GET QUOTE
+-------------
+GET /api/quote?month=3&role=student&religion=Islam
+
+Response:
+{
+    "quote": "March brings new beginnings and fresh opportunities."
+}
+
+
+25. GET SEARCH SUGGESTIONS
+---------------------------
+GET /api/suggestions?username=john_doe&role=student&religion=Islam
+
+Response:
+{
+    "suggestions": ["Meeting", "Lecture", "Assignment", "Exam"]
+}
+
+
+===============================================================================
+                    ERROR RESPONSES
+===============================================================================
+
+All endpoints may return error responses:
+
+400 Bad Request:
+{
+    "error": "Missing parameters"
+}
+
+403 Forbidden:
+{
+    "error": "Unauthorized"
+}
+
+404 Not Found:
+{
+    "error": "Resource not found"
+}
+
+500 Internal Server Error:
+{
+    "error": "Database error"
+}
+
+
+===============================================================================
+                    RATE LIMITING
+===============================================================================
+
+Currently: No rate limiting implemented
+Recommended: 100 requests per minute per IP
+
+
+===============================================================================
+                    AUTHENTICATION
+===============================================================================
+
+Currently: No token-based authentication
+Recommended: Implement JWT tokens for production
+
+
+===============================================================================
+                    CORS
+===============================================================================
+
+Currently: No CORS headers
+Works only with same-origin requests (localhost:8080)
+
+
+===============================================================================
+                    DATA FORMATS
+===============================================================================
+
+Date Format: YYYY-MM-DD (e.g., "2025-03-15")
+Time Format: HH:MM (24-hour, e.g., "14:30")
+Boolean: true/false (lowercase)
+Strings: UTF-8 encoded
+
+
+===============================================================================
+                    EXAMPLE WORKFLOWS
+===============================================================================
+
+1. USER REGISTRATION & LOGIN:
+   POST /api/user/add → POST /api/user/validate
+
+2. CREATE EVENT:
+   POST /api/user/validate → POST /api/events
+
+3. SEARCH EVENTS:
+   GET /api/search/trie → GET /api/events (for each ID)
+
+4. STUDENT FINDS TEACHER:
+   GET /api/teachers/search → GET /api/teachers/availability
+
+5. TEACHER POSTS DEPARTMENT EVENT:
+   POST /api/events (with department field)
+
+
+===============================================================================
+                    TESTING WITH CURL
+===============================================================================
+
+# Register User
+curl -X POST http://localhost:8080/api/user/add \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","password":"123","role":"student","university":"NUST"}'
+
+# Login
+curl -X POST http://localhost:8080/api/user/validate \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","password":"123","role":"student","university":"NUST"}'
+
+# Get Events
+curl "http://localhost:8080/api/events?username=test&date=2025-03-15"
+
+# Create Event
+curl -X POST http://localhost:8080/api/events \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","date":"2025-03-15","description":"Meeting","startTime":"09:00","endTime":"10:00","color":"Blue","isPersonal":true,"recurrence":"none"}'
+
+
+===============================================================================
+                    TOTAL ENDPOINTS: 25
+===============================================================================
+
+Authentication: 3
+Events: 7
+Holidays: 3
+Academic: 3
+Data: 3
+Tasks: 4
+Utility: 2
+
+DSA-Powered Endpoints: 3
+- /api/events/recurrence (Recurrence Engine)
+- /api/search/trie (Trie Search)
+- /api/validate/roll (Regex + Database)
+
+===============================================================================

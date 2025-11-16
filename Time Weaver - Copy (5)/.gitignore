@@ -1,0 +1,30 @@
+# Build directories
+build/
+cmake-build-*/
+
+# Database
+*.db
+*.db-journal
+
+# Executables
+TimeWeaver
+TimeWeaver.exe
+*.exe
+
+# IDE files
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# OS files
+.DS_Store
+Thumbs.db
+

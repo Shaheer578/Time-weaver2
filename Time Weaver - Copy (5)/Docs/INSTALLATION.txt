@@ -1,0 +1,477 @@
+===============================================================================
+                    TIME WEAVER - INSTALLATION GUIDE
+                    Complete Setup Instructions
+===============================================================================
+
+SYSTEM REQUIREMENTS:
+--------------------
+- Operating System: Windows 10/11, Linux, or macOS
+- Compiler: MinGW-w64 (Windows) or GCC 5+ (Linux/Mac)
+- C++ Standard: C++11 or higher
+- SQLite3: Version 3.x
+- RAM: Minimum 512MB
+- Disk Space: 50MB
+- Browser: Chrome, Firefox, Edge, or Safari (latest version)
+
+===============================================================================
+                    WINDOWS INSTALLATION
+===============================================================================
+
+STEP 1: INSTALL MINGW-W64
+--------------------------
+1. Download MinGW-w64 from: https://www.mingw-w64.org/
+2. Run the installer
+3. Select:
+   - Architecture: x86_64
+   - Threads: posix
+   - Exception: seh
+4. Add to PATH:
+   - Open System Properties → Environment Variables
+   - Edit PATH variable
+   - Add: C:\mingw64\bin
+5. Verify installation:
+   Open Command Prompt and run:
+   ```
+   g++ --version
+   ```
+   Should show GCC version 5.0 or higher
+
+STEP 2: VERIFY SQLITE3
+-----------------------
+SQLite3 files are included in the project:
+- sqlite3.c
+- sqlite3.h
+
+No additional installation needed!
+
+STEP 3: EXTRACT PROJECT
+------------------------
+1. Extract "Time Weaver - Copy (5)" to a folder
+2. Recommended path: C:\Projects\TimeWeaver
+3. Avoid paths with spaces or special characters
+
+STEP 4: COMPILE PROJECT
+------------------------
+1. Open Command Prompt
+2. Navigate to project folder:
+   ```
+   cd "C:\Users\HP\Desktop\Time Weaver - Copy (5)"
+   ```
+3. Run build script:
+   ```
+   build.bat
+   ```
+4. Wait for compilation (30-60 seconds)
+5. Look for "Build successful!" message
+
+STEP 5: RUN SERVER
+------------------
+1. In the same Command Prompt:
+   ```
+   TimeWeaver.exe
+   ```
+2. You should see:
+   ```
+   Server listening on port 8080...
+   ```
+3. Keep this window open
+
+STEP 6: ACCESS APPLICATION
+---------------------------
+1. Open your web browser
+2. Navigate to: http://localhost:8080
+3. You should see the login page
+4. Default admin credentials:
+   - Username: admin
+   - Password: admin123
+
+
+===============================================================================
+                    LINUX INSTALLATION
+===============================================================================
+
+STEP 1: INSTALL GCC
+-------------------
+Ubuntu/Debian:
+```bash
+sudo apt update
+sudo apt install build-essential
+sudo apt install libsqlite3-dev
+```
+
+Fedora/RHEL:
+```bash
+sudo dnf install gcc-c++
+sudo dnf install sqlite-devel
+```
+
+Arch Linux:
+```bash
+sudo pacman -S gcc
+sudo pacman -S sqlite
+```
+
+Verify:
+```bash
+g++ --version
+```
+
+STEP 2: EXTRACT PROJECT
+------------------------
+```bash
+cd ~/Downloads
+unzip "Time Weaver - Copy (5).zip"
+cd "Time Weaver - Copy (5)"
+```
+
+STEP 3: COMPILE PROJECT
+------------------------
+```bash
+# Compile SQLite
+gcc -c sqlite3.c -o sqlite3.o
+
+# Compile project
+g++ -std=c++11 -O2 server.cpp database.cpp sqlite3.o -o TimeWeaver -I. -lpthread
+
+# Make executable
+chmod +x TimeWeaver
+```
+
+STEP 4: RUN SERVER
+------------------
+```bash
+./TimeWeaver
+```
+
+STEP 5: ACCESS APPLICATION
+---------------------------
+Open browser: http://localhost:8080
+
+
+===============================================================================
+                    MACOS INSTALLATION
+===============================================================================
+
+STEP 1: INSTALL XCODE COMMAND LINE TOOLS
+-----------------------------------------
+```bash
+xcode-select --install
+```
+
+STEP 2: INSTALL HOMEBREW (if not installed)
+--------------------------------------------
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+STEP 3: INSTALL SQLITE3
+------------------------
+```bash
+brew install sqlite3
+```
+
+STEP 4: COMPILE PROJECT
+------------------------
+```bash
+cd ~/Downloads/"Time Weaver - Copy (5)"
+
+# Compile SQLite
+gcc -c sqlite3.c -o sqlite3.o
+
+# Compile project
+g++ -std=c++11 -O2 server.cpp database.cpp sqlite3.o -o TimeWeaver -I.
+
+# Make executable
+chmod +x TimeWeaver
+```
+
+STEP 5: RUN SERVER
+------------------
+```bash
+./TimeWeaver
+```
+
+STEP 6: ACCESS APPLICATION
+---------------------------
+Open browser: http://localhost:8080
+
+
+===============================================================================
+                    TROUBLESHOOTING
+===============================================================================
+
+PROBLEM: "g++ is not recognized"
+SOLUTION:
+- Windows: Ensure MinGW bin folder is in PATH
+- Linux/Mac: Install GCC using package manager
+
+PROBLEM: "Cannot open database"
+SOLUTION:
+- Ensure you have write permissions in project folder
+- Delete calendar.db and restart server
+- Check disk space
+
+PROBLEM: "Port 8080 already in use"
+SOLUTION:
+- Close other applications using port 8080
+- Or modify server.cpp line with PORT definition
+- Recompile after change
+
+PROBLEM: "sqlite3.h not found"
+SOLUTION:
+- Ensure sqlite3.h is in project folder
+- Check include path in compilation command
+
+PROBLEM: "Compilation errors"
+SOLUTION:
+- Ensure C++11 or higher
+- Check all source files are present
+- Verify no syntax errors
+
+PROBLEM: "Browser shows 'Cannot connect'"
+SOLUTION:
+- Ensure server is running
+- Check firewall settings
+- Try http://127.0.0.1:8080 instead
+
+PROBLEM: "Login doesn't work"
+SOLUTION:
+- Check console for errors
+- Verify database was created (calendar.db)
+- Try admin/admin123 credentials
+
+PROBLEM: "Events don't save"
+SOLUTION:
+- Check browser console for errors
+- Verify server is running
+- Check database file permissions
+
+
+===============================================================================
+                    FIRST-TIME SETUP
+===============================================================================
+
+STEP 1: CREATE ADMIN ACCOUNT
+-----------------------------
+1. Go to http://localhost:8080
+2. Click "Admin" button
+3. Login with:
+   - Username: admin
+   - Password: admin123
+
+STEP 2: CREATE PERSONAL ACCOUNT
+--------------------------------
+1. Click "Personal Calendar"
+2. Enter username and password
+3. Click "Register"
+4. Select religion (optional)
+5. Click "Login"
+
+STEP 3: CREATE STUDENT ACCOUNT
+-------------------------------
+1. Click "Academic Calendar"
+2. Click "Student" tab
+3. Enter:
+   - Name: Your name
+   - Roll Number: CT-123 (format: XX-123)
+   - University: Select from dropdown
+   - Password: Your password
+4. Click "Register"
+5. Department will auto-detect from roll number
+
+STEP 4: CREATE TEACHER ACCOUNT
+-------------------------------
+1. Click "Academic Calendar"
+2. Click "Teacher" tab
+3. Enter:
+   - Name: Your name
+   - Username: Unique username
+   - University: Select from dropdown
+   - Department: Select from dropdown
+   - Password: Your password
+4. Click "Register"
+
+
+===============================================================================
+                    DATABASE SETUP
+===============================================================================
+
+AUTOMATIC SETUP:
+----------------
+On first run, the server automatically:
+1. Creates calendar.db file
+2. Creates all tables
+3. Populates universities (18 entries)
+4. Populates departments (42 entries)
+5. Builds search index
+
+MANUAL RESET:
+-------------
+To reset database:
+1. Stop server (Ctrl+C)
+2. Delete calendar.db file
+3. Restart server
+4. Database will be recreated
+
+
+===============================================================================
+                    CONFIGURATION
+===============================================================================
+
+PORT CONFIGURATION:
+-------------------
+To change port (default: 8080):
+1. Open server.cpp
+2. Find line: int PORT = 8080;
+3. Change to desired port
+4. Recompile: build.bat
+5. Access: http://localhost:NEW_PORT
+
+DATABASE LOCATION:
+------------------
+Default: ./calendar.db (same folder as executable)
+To change:
+1. Open database.cpp
+2. Find: openDatabase()
+3. Modify path
+4. Recompile
+
+CACHE SIZE:
+-----------
+Default LRU cache: 100 entries
+To change:
+1. Open database.cpp
+2. Find: new LRUCache(100)
+3. Change capacity
+4. Recompile
+
+
+===============================================================================
+                    PERFORMANCE TUNING
+===============================================================================
+
+FOR BETTER PERFORMANCE:
+-----------------------
+1. Use -O3 optimization flag:
+   g++ -std=c++11 -O3 ...
+
+2. Enable database indexing (already done)
+
+3. Increase LRU cache size for more users
+
+4. Use SSD for database file
+
+5. Close unnecessary applications
+
+
+===============================================================================
+                    BACKUP & RESTORE
+===============================================================================
+
+BACKUP:
+-------
+1. Stop server
+2. Copy calendar.db to backup location
+3. Restart server
+
+RESTORE:
+--------
+1. Stop server
+2. Replace calendar.db with backup
+3. Restart server
+
+EXPORT DATA:
+------------
+Use SQLite tools:
+```bash
+sqlite3 calendar.db .dump > backup.sql
+```
+
+IMPORT DATA:
+------------
+```bash
+sqlite3 calendar.db < backup.sql
+```
+
+
+===============================================================================
+                    UNINSTALLATION
+===============================================================================
+
+WINDOWS:
+--------
+1. Stop server (Ctrl+C)
+2. Delete project folder
+3. Delete calendar.db (if outside project folder)
+4. (Optional) Remove MinGW if not needed
+
+LINUX/MAC:
+----------
+1. Stop server (Ctrl+C)
+2. rm -rf "Time Weaver - Copy (5)"
+3. rm calendar.db (if outside project folder)
+
+
+===============================================================================
+                    GETTING HELP
+===============================================================================
+
+If you encounter issues:
+1. Check TROUBLESHOOTING section above
+2. Review README.md
+3. Check API_DOCUMENTATION.txt
+4. Verify all files are present
+5. Try clean rebuild (delete .o files and recompile)
+
+
+===============================================================================
+                    FILE CHECKLIST
+===============================================================================
+
+Required Files:
+✓ server.cpp
+✓ database.cpp
+✓ database.h
+✓ dsa_structures.h
+✓ sqlite3.c
+✓ sqlite3.h
+✓ build.bat (Windows) or compile manually
+✓ public/index.html
+✓ public/app.js
+✓ public/app_academic_features.js
+✓ public/style.css
+
+Documentation:
+✓ README.md
+✓ COMPLEXITY_ANALYSIS.txt
+✓ API_DOCUMENTATION.txt
+✓ FEATURES.txt
+✓ INSTALLATION.txt (this file)
+✓ PROJECT_SUMMARY.txt
+✓ SUBMISSION_CHECKLIST.txt
+
+Generated Files (auto-created):
+- calendar.db (database)
+- sqlite3.o (object file)
+- TimeWeaver.exe (Windows) or TimeWeaver (Linux/Mac)
+
+
+===============================================================================
+                    QUICK START SUMMARY
+===============================================================================
+
+Windows:
+1. Install MinGW-w64
+2. Run build.bat
+3. Run TimeWeaver.exe
+4. Open http://localhost:8080
+
+Linux/Mac:
+1. Install GCC
+2. Compile: g++ -std=c++11 -O2 server.cpp database.cpp sqlite3.o -o TimeWeaver -I. -lpthread
+3. Run: ./TimeWeaver
+4. Open http://localhost:8080
+
+That's it! You're ready to use Time Weaver! 🎉
+
+===============================================================================

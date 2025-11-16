@@ -1,0 +1,141 @@
+===============================================================================
+                    TIME WEAVER - PROJECT STRUCTURE
+                    Organized Folder Layout
+===============================================================================
+
+Time Weaver/
+│
+├── 📁 docs/                        Documentation Files
+│   ├── README.md                   Main documentation
+│   ├── INSTALLATION.txt            Setup guide
+│   ├── API_DOCUMENTATION.txt       API reference
+│   ├── FEATURES.txt                Feature list
+│   ├── COMPLEXITY_ANALYSIS.txt     DSA analysis
+│   ├── PROJECT_SUMMARY.txt         Project overview
+│   ├── SUBMISSION_CHECKLIST.txt    Pre-submission check
+│   └── DOCUMENTATION_INDEX.txt     Navigation guide
+│
+├── 📁 src/                         Source Code
+│   ├── server.cpp                  HTTP server (946 lines)
+│   ├── database.cpp                Database operations (1,227 lines)
+│   ├── database.h                  Database interface (120 lines)
+│   └── dsa_structures.h            DSA implementations (410 lines)
+│
+├── 📁 public/                      Frontend Files
+│   ├── index.html                  UI structure (507 lines)
+│   ├── app.js                      Main logic (3,118 lines)
+│   ├── app_academic_features.js    Academic features (338 lines)
+│   └── style.css                   Styling (2,507 lines)
+│
+├── 📁 database/                    Database Files
+│   ├── sqlite3.c                   SQLite source
+│   ├── sqlite3.h                   SQLite header
+│   └── calendar.db                 Database (auto-generated)
+│
+├── 📄 build.bat                    Build script
+├── 📄 TimeWeaver.exe               Executable (generated)
+├── 📄 sqlite3.o                    Object file (generated)
+└── 📄 PROJECT_STRUCTURE.txt        This file
+
+===============================================================================
+                    FOLDER DESCRIPTIONS
+===============================================================================
+
+📁 docs/
+--------
+Contains all documentation files (8 files, ~4,500 lines)
+- User guides
+- API documentation
+- Technical analysis
+- Submission materials
+
+📁 src/
+-------
+Contains all C++ source code (4 files, ~2,800 lines)
+- Backend server implementation
+- Database operations
+- DSA implementations
+- Core business logic
+
+📁 public/
+----------
+Contains all frontend files (4 files, ~6,500 lines)
+- HTML structure
+- JavaScript logic
+- CSS styling
+- User interface
+
+📁 database/
+-----------
+Contains SQLite files
+- SQLite3 source code
+- Database file (auto-generated)
+- No manual editing needed
+
+===============================================================================
+                    BUILD INSTRUCTIONS
+===============================================================================
+
+The build script (build.bat) has been updated to work with this structure:
+
+1. Compiles SQLite from database/ folder
+2. Compiles C++ from src/ folder
+3. Links everything together
+4. Creates TimeWeaver.exe in root folder
+
+To build:
+```
+build.bat
+```
+
+To run:
+```
+TimeWeaver.exe
+```
+
+===============================================================================
+                    FILE COUNTS
+===============================================================================
+
+Documentation:  8 files  (~4,500 lines)
+Source Code:    4 files  (~2,800 lines)
+Frontend:       4 files  (~6,500 lines)
+Database:       3 files  (SQLite + auto-generated)
+Build:          1 file   (build.bat)
+Total:          20 files (~13,800 lines)
+
+===============================================================================
+                    BENEFITS OF THIS STRUCTURE
+===============================================================================
+
+✓ Organized - Easy to navigate
+✓ Separated - Docs, code, frontend, database
+✓ Professional - Industry-standard layout
+✓ Maintainable - Easy to find files
+✓ Scalable - Easy to add new files
+✓ Clean - No clutter in root folder
+
+===============================================================================
+                    IMPORTANT NOTES
+===============================================================================
+
+1. Build script automatically finds files in correct folders
+2. Server serves files from public/ folder
+3. Database file created in database/ folder
+4. All documentation in docs/ folder
+5. All source code in src/ folder
+
+===============================================================================
+                    NAVIGATION TIPS
+===============================================================================
+
+Looking for...                  Go to...
+--------------                  --------
+Documentation?                  docs/
+Source code?                    src/
+Frontend files?                 public/
+Database files?                 database/
+Build script?                   Root folder
+Executable?                     Root folder (after build)
+
+===============================================================================
