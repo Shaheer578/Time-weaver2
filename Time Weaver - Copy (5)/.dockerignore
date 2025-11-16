@@ -1,0 +1,13 @@
+# Files to exclude from Docker build
+TimeWeaver.exe
+*.o
+*.db
+calendar.db
+build.bat
+Docs/
+*.md
+!README.md
+netlify.toml
+_redirects
+public/
+

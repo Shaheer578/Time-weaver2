@@ -9,7 +9,19 @@ let currentlyEditingEventId = -1;
 let currentMonth = new Date().getMonth() + 1;
 let currentYear = new Date().getFullYear();
 
-const API_BASE = "http://localhost:8080/api";
+// API Base URL - configurable for different environments
+const API_BASE = (() => {
+  // Check if we're in development (localhost) or production
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return "http://localhost:8080/api";
+  }
+  // For production, check for environment variable or use default
+  // You can set this in Netlify's environment variables as API_BASE_URL
+  // Or update this default to your backend URL
+  const envApiUrl = window.API_BASE_URL || "https://your-backend-url.railway.app/api";
+  return envApiUrl;
+})();
 
 // Month logos (SVG data)
 const monthLogos = {

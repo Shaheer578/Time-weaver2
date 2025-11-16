@@ -942,7 +942,15 @@ cerr << "Socket creation failed" << endl;
     memset(&serverAddr, 0, sizeof(serverAddr));
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(8080);
+    
+    // Get port from environment variable (for cloud deployment) or use default 8080
+    int port = 8080;
+    const char* portEnv = getenv("PORT");
+    if (portEnv != nullptr) {
+        port = atoi(portEnv);
+        if (port <= 0 || port > 65535) port = 8080; // Validate port range
+    }
+    serverAddr.sin_port = htons(port);
     
     if (bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
 cerr << "Bind failed" << endl;
@@ -955,7 +963,7 @@ cerr << "Listen failed" << endl;
         return 1;
     }
     
-cout << "Time Weaver server running on http://localhost:8080" << endl;
+cout << "Time Weaver server running on port " << port << endl;
     
     // Accept connections
     while (true) {

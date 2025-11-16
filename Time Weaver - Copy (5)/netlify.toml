@@ -1,0 +1,22 @@
+[build]
+  # Publish the public directory
+  publish = "public"
+  # No build command needed for static site
+  command = "echo 'No build step needed for static site'"
+
+# SPA routing - redirect all routes to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Optional: Proxy API calls through Netlify
+# Uncomment and update the URL below when you have your backend deployed
+# This allows you to use relative URLs like /api/* instead of full backend URLs
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://your-backend-url.railway.app/api/:splat"
+#   status = 200
+#   force = true
+#   headers = {X-From = "Netlify"}
+
