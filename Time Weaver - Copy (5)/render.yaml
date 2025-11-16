@@ -1,15 +1,12 @@
-# Render.com configuration for Time Weaver Backend
-# This file tells Render how to build and deploy your service
-
 services:
   - type: web
-    name: time-weaver-backend
-    env: docker
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+    name: time-weaver
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
     envVars:
       - key: PORT
         value: 8080
-    healthCheckPath: /api/universities
-    plan: free  # Use free tier (spins down after inactivity)
+      - key: PYTHON_VERSION
+        value: 3.11
 
